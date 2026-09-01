@@ -1,0 +1,108 @@
+<article class="showcase" [id]="product().slug" [attr.aria-labelledby]="product().slug + '-title'">
+  <div class="showcase__grid" [class.showcase__grid--mirrored]="mirrored()">
+    <!-- 3D stage -->
+    <div class="showcase__stage">
+      <app-product-viewer [config]="product().viewer" [productName]="product().name" />
+    </div>
+
+    <!-- Copy, price and panels -->
+    <div class="showcase__info">
+      <p class="nu-label">{{ product().eyebrow }}</p>
+      <h2 class="showcase__title" [id]="product().slug + '-title'">{{ product().name }}</h2>
+      <p class="showcase__tagline">{{ product().tagline }}</p>
+      <p class="showcase__summary">{{ product().summary }}</p>
+
+      <ul class="showcase__highlights">
+        @for (highlight of product().highlights; track highlight) {
+          <li>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10.5 4 4 8-9" /></svg>
+            <span>{{ highlight }}</span>
+          </li>
+        }
+      </ul>
+
+      <div class="showcase__price">
+        <div>
+          <p class="nu-label">Your price</p>
+          <p class="showcase__amount">{{ priceLabel() }}</p>
+          <p class="showcase__price-note">
+            @if (hasListPrice()) {
+              {{ product().pricing.unit }} ·
+            }
+            {{ product().pricing.note }}
+          </p>
+        </div>
+        <div class="showcase__actions">
+          <button type="button" class="nu-btn-primary" (click)="requestQuote()">
+            Request a quote
+          </button>
+          <a class="nu-btn-ghost" href="#contact">Talk to a specialist</a>
+        </div>
+      </div>
+
+      <!-- Dropdown panels: specification and box contents -->
+      <div class="panels">
+        <!-- Specifications -->
+        <section class="panel">
+          <h3>
+            <button
+              type="button"
+              class="panel__trigger"
+              [attr.aria-expanded]="openPanel() === 'specs'"
+              [attr.aria-controls]="product().slug + '-specs'"
+              (click)="togglePanel('specs')"
+            >
+              <span>Specification</span>
+              <span class="panel__meta">Technical data &amp; certification</span>
+              <svg class="panel__chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+          </h3>
+          <div class="panel__body" [id]="product().slug + '-specs'" [hidden]="openPanel() !== 'specs'">
+            @for (group of product().specGroups; track group.title) {
+              <div class="spec-group">
+                <h4 class="spec-group__title">{{ group.title }}</h4>
+                <dl class="spec-list">
+                  @for (item of group.items; track item.label) {
+                    <div class="spec-list__row">
+                      <dt>{{ item.label }}</dt>
+                      <dd>
+                        {{ item.value }}
+                        @if (item.note) {
+                          <span class="spec-list__note">{{ item.note }}</span>
+                        }
+                      </dd>
+                    </div>
+                  }
+                </dl>
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- What's included -->
+        <section class="panel">
+          <h3>
+            <button
+              type="button"
+              class="panel__trigger"
+              [attr.aria-expanded]="openPanel() === 'included'"
+              [attr.aria-controls]="product().slug + '-included'"
+              (click)="togglePanel('included')"
+            >
+              <span>What is included</span>
+              <span class="panel__meta">Delivery contents</span>
+              <svg class="panel__chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+          </h3>
+          <div class="panel__body" [id]="product().slug + '-included'" [hidden]="openPanel() !== 'included'">
+            <ul class="included">
+              @for (item of product().includedInBox; track item) {
+                <li>{{ item }}</li>
+              }
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</article>

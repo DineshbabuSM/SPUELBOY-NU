@@ -1,0 +1,225 @@
+:host {
+  display: block;
+}
+
+/* --------------------------------------------------------------------- hero */
+
+.hero {
+  scroll-margin-top: 5rem;
+  position: relative;
+  padding-block: clamp(2.5rem, 5vw, 4rem) clamp(1.75rem, 4vw, 2.75rem);
+  background:
+    radial-gradient(70% 60% at 20% 0%, color-mix(in srgb, var(--color-nu-orange) 12%, transparent), transparent 65%),
+    radial-gradient(60% 50% at 90% 20%, color-mix(in srgb, var(--color-nu-sky) 22%, transparent), transparent 60%);
+}
+
+/* The catalogue cover, set the same way: the claim in heavy orange capitals
+   with the concept line in black capitals underneath it.
+
+   The measure is in rem, not ch: `ch` here would resolve against the inherited
+   16px, not the display size, and squeeze the headline into a narrow column. */
+.hero__title {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  max-width: min(100%, 44rem);
+}
+
+.hero__headline {
+  font-size: clamp(2rem, 5.2vw, 3.5rem);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  color: var(--color-nu-orange);
+  text-wrap: balance;
+}
+
+.hero__sub {
+  font-size: clamp(0.95rem, 1.7vw, 1.25rem);
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--color-nu-heading);
+}
+
+.hero__sub sup {
+  font-size: 0.5em;
+  top: -0.7em;
+}
+
+.hero__lead {
+  margin-top: 1rem;
+  max-width: 46ch;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--color-nu-muted);
+}
+
+.hero__stats {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2.25rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--color-nu-hairline);
+}
+
+/* Two-up on phones, four-up once there is room for them. */
+@media (min-width: 460px) {
+  .hero__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem 1rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .hero__stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.hero__stat-value {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--color-nu-heading);
+}
+
+.hero__stat-label {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--color-nu-muted);
+}
+
+/* The catalogue prints its glassware sketches in the margin; here one fills the
+   empty right half of the hero. It is decoration behind the copy, not content:
+   it never takes pointer events, and it only appears once the gap beside the
+   headline is wider than the drawing. Mind that the threshold is CSS pixels:
+   a 1920px screen at 150% OS scaling reports about 1267 of them, so the bar
+   has to sit below that or most laptops never see it. */
+.hero__inner {
+  position: relative;
+}
+
+.hero__backdrop {
+  display: none;
+}
+
+@media (min-width: 1180px) {
+  .hero__backdrop {
+    display: block;
+    position: absolute;
+    /* Anchored to the top of the copy, not the middle of the section: centring
+       it vertically pushed the drawing through the stats rule below. Its own
+       aspect ratio then keeps it inside the headline-and-lead band. */
+    top: 0;
+    right: 0;
+    /* The design spec asks for min(730px, max(63%, 240px)). The 730px cap and
+       the 240px floor carry over as given; the percentage does not — at 63% the
+       drawing reaches back under the headline on any viewport below ~1675px,
+       including a 1920px screen at 150% scaling. 46% is the widest that still
+       clears the headline at this breakpoint, and it still grows to the 730px
+       cap once the container tops out. */
+    width: min(730px, max(46%, 240px));
+    pointer-events: none;
+  }
+
+  /* The copy stays on top of the drawing at every scroll position. */
+  .hero__title,
+  .hero__lead,
+  .hero__stats {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/* ----------------------------------------------------------------- sections */
+
+.products,
+.process {
+  padding-block: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+/* The catalogue alternates white paper with a tinted band; the routine sits on
+   the tint so the white step cards read as printed panels. */
+.process {
+  background: var(--color-nu-shell);
+  border-top: 1px solid var(--color-nu-hairline);
+}
+
+.section__title {
+  margin-top: 0.5rem;
+  font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+  font-weight: 800;
+  color: var(--color-nu-heading);
+}
+
+.section__lead {
+  margin-top: 0.75rem;
+  max-width: 62ch;
+  line-height: 1.65;
+  color: var(--color-nu-muted);
+}
+
+/* -------------------------------------------------------------------- steps */
+
+.steps {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
+  counter-reset: step;
+}
+
+/* Two-up on tablets so the step text keeps a readable measure, four-up on
+   desktop where the routine reads as one row. */
+@media (min-width: 640px) {
+  .steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .steps {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.step {
+  padding: 1.35rem;
+  border-radius: var(--radius-nu);
+  border: 1px solid var(--color-nu-hairline);
+  background: var(--color-nu-paper);
+  box-shadow: 0 6px 18px rgba(20, 24, 28, 0.05);
+}
+
+.step__number {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: var(--color-nu-orange);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.9375rem;
+}
+
+.step__phase {
+  display: block;
+  margin-top: 0.85rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-nu-orange);
+}
+
+.step__text {
+  margin-top: 0.4rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--color-nu-body);
+}

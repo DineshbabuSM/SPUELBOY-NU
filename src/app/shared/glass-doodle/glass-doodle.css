@@ -1,0 +1,35 @@
+:host {
+  display: block;
+}
+
+.doodle {
+  display: block;
+  width: 100%;
+  height: auto;
+  animation: wipeIn 1.9s 0.15s cubic-bezier(0.35, 0, 0.25, 1) both;
+}
+
+/* Left to right, because that is the direction the line is drawn: the thread
+   enters at the left edge and leaves at the right, so the wipe reads as the pen
+   travelling rather than as a panel sliding open. `both` holds the closed state
+   through the short delay, so nothing flashes before the wipe starts.
+
+   The artwork's white ground is keyed out of the file itself — alpha
+   unpremultiplied from white — rather than hidden behind `mix-blend-mode`.
+   A blend mode depends on the stacking context it lands in; an alpha channel
+   does not, so the hero gradient runs behind the line on any background. */
+@keyframes wipeIn {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .doodle {
+    animation: none;
+  }
+}

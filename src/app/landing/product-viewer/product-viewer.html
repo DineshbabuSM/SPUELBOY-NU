@@ -1,0 +1,122 @@
+<div class="stage" #stage>
+  <!-- The canvas itself is the interactive control: focusable, labelled and
+       keyboard-operable, with the instructions exposed via aria-describedby. -->
+  <canvas
+    #canvas
+    class="stage__canvas"
+    tabindex="0"
+    role="application"
+    aria-roledescription="Interactive 3D product view"
+    [attr.aria-label]="productName() + ' in 3D. Drag to rotate, scroll to zoom.'"
+    [attr.aria-describedby]="'viewer-help-' + config().variant"
+    (keydown)="onStageKeydown($event)"
+  ></canvas>
+
+  <p class="sr-only" [id]="'viewer-help-' + config().variant">
+    Use the left and right arrow keys to turn the product, the up and down arrow keys to change the
+    height of the camera, plus and minus to zoom, and the Home key to reset the view. Hold Shift for
+    larger steps. The play button runs the whole demonstration in one go: the device takes itself
+    apart to show the parts inside and puts itself back together, and then a stained beer glass is
+    washed on the brushes and clear-rinsed on the rinser. The feature-marker button adds numbered
+    points you can open for detail. All specification details are also available as text below the
+    product.
+  </p>
+
+  <!-- Orientation is announced politely so screen-reader users know where they are. -->
+  <p class="sr-only" aria-live="polite">{{ orientation() }}</p>
+
+  @if (!loaded() && !unavailable()) {
+    <div class="stage__overlay" aria-hidden="true">
+      <span class="stage__spinner"></span>
+      <span class="stage__overlay-text">Preparing the 3D view…</span>
+    </div>
+  }
+
+  @if (unavailable(); as reason) {
+    <div class="stage__fallback" role="status">
+      <p class="stage__fallback-title">3D view unavailable</p>
+      <p class="stage__fallback-text">{{ reason }}</p>
+      <p class="stage__fallback-text">
+        Every detail shown in the 3D view is also listed in the specification panel below.
+      </p>
+    </div>
+  }
+
+  @if (loaded() && showHotspots()) {
+    <div class="stage__hotspots">
+      @for (spot of hotspots(); track spot.id) {
+        <button
+          type="button"
+          class="hotspot"
+          [class.hotspot--hidden]="!spot.visible"
+          [class.hotspot--active]="activeHotspotId() === spot.id"
+          [style.left.px]="spot.x"
+          [style.top.px]="spot.y"
+          [attr.aria-expanded]="activeHotspotId() === spot.id"
+          [attr.tabindex]="spot.visible ? 0 : -1"
+          (click)="selectHotspot(spot)"
+        >
+          <span class="hotspot__dot" aria-hidden="true"></span>
+          <span class="sr-only">{{ spot.label }}: {{ spot.description }}</span>
+        </button>
+      }
+
+      @if (activeHotspot(); as spot) {
+        <div
+          class="hotspot-card"
+          role="note"
+          [style.left.px]="spot.x"
+          [style.top.px]="spot.y"
+        >
+          <p class="hotspot-card__title">{{ spot.label }}</p>
+          <p class="hotspot-card__text">{{ spot.description }}</p>
+        </div>
+      }
+    </div>
+  }
+
+  <div class="stage__toolbar" role="toolbar" [attr.aria-label]="productName() + ' 3D view controls'">
+    <button
+      type="button"
+      class="tool tool--sequence tool--play"
+      [class.tool--on]="!!sequence()"
+      [disabled]="!!sequence() || !loaded()"
+      (click)="playTour()"
+      [attr.aria-label]="
+        sequence() === 'exploded'
+          ? 'Playing: the device is coming apart to show the parts inside'
+          : sequence() === 'cleaning'
+            ? 'Playing: a stained glass is being washed'
+            : 'Play the demonstration: the parts inside, then a glass being washed'
+      "
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" /></svg>
+    </button>
+    <button type="button" class="tool" (click)="zoom(1)" aria-label="Zoom in">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6" /><path d="M11 8v6M8 11h6M20 20l-4.5-4.5" /></svg>
+    </button>
+    <button type="button" class="tool" (click)="zoom(-1)" aria-label="Zoom out">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6" /><path d="M8 11h6M20 20l-4.5-4.5" /></svg>
+    </button>
+    <button
+      type="button"
+      class="tool"
+      [class.tool--on]="autoRotate()"
+      [attr.aria-pressed]="autoRotate()"
+      (click)="toggleAutoRotate()"
+      aria-label="Automatic turntable"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.7-5.6M20 12a8 8 0 0 1-13.7 5.6" /><path d="M18 3v4h-4M6 21v-4h4" /></svg>
+    </button>
+    <button
+      type="button"
+      class="tool"
+      [class.tool--on]="showHotspots()"
+      [attr.aria-pressed]="showHotspots()"
+      (click)="toggleHotspots()"
+      aria-label="Feature markers"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3" /><circle cx="12" cy="12" r="8" /></svg>
+    </button>
+  </div>
+</div>

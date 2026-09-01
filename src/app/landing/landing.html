@@ -1,0 +1,61 @@
+<!-- Hero -->
+<section class="hero" id="top">
+  <div class="page-container hero__inner">
+    <app-glass-doodle class="hero__backdrop" />
+
+    <h1 class="hero__title">
+      <span class="hero__headline">More than cleaning glasses.</span>
+      <span class="hero__sub">The SPÜLBOY<sup>®</sup> hygiene concept</span>
+    </h1>
+    <p class="hero__lead">No electricity. No plumbing. A clean glass in seconds.</p>
+
+    <ul class="hero__stats">
+      @for (stat of stats; track stat.label) {
+        <li>
+          <span class="hero__stat-value">{{ stat.value }}</span>
+          <span class="hero__stat-label">{{ stat.label }}</span>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
+<!-- The two products -->
+<section class="products" aria-labelledby="products-title">
+  <div class="page-container">
+    <p class="nu-label">The NU® generation</p>
+    <h2 class="section__title" id="products-title">Choose your NU®</h2>
+    <p class="section__lead">
+      100% flexible: NU® convinces as a portable device that works without a sink, and as a custom-made
+      built-in for counters where every centimetre counts.
+    </p>
+
+    @for (product of products; track product.id; let index = $index) {
+      <app-product-showcase
+        [product]="product"
+        [mirrored]="index % 2 === 1"
+        (quoteRequested)="onQuoteRequested($event)"
+      />
+    }
+  </div>
+</section>
+
+<!-- Cleaning routine -->
+<section class="process" aria-labelledby="process-title">
+  <div class="page-container">
+    <p class="nu-label">100% hygienically cleaning</p>
+    <h2 class="section__title" id="process-title">Four steps, every glass</h2>
+
+    <ol class="steps">
+      @for (step of steps; track step.step) {
+        <li class="step">
+          <span class="step__number" aria-hidden="true">{{ step.step }}</span>
+          <span class="step__phase">{{ step.phase }}</span>
+          <p class="step__text">{{ step.text }}</p>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+
+<app-footer [prefill]="quoteRequest()" />

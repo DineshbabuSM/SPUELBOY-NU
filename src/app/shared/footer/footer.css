@@ -1,0 +1,212 @@
+:host {
+  display: block;
+}
+
+.footer {
+  scroll-margin-top: 5rem;
+  padding-block: 4rem 2rem;
+  border-top: 1px solid var(--color-nu-hairline);
+  background:
+    radial-gradient(90% 70% at 15% 0%, color-mix(in srgb, var(--color-nu-orange) 8%, transparent), transparent 60%),
+    linear-gradient(180deg, var(--color-nu-paper) 0%, var(--color-nu-mist) 100%);
+}
+
+.footer__grid {
+  display: grid;
+  gap: 3rem;
+}
+
+@media (min-width: 1024px) {
+  .footer__grid {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: 4rem;
+  }
+}
+
+.footer__title {
+  margin-top: 0.5rem;
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--color-nu-heading);
+  max-width: 22ch;
+}
+
+.footer__lead {
+  margin-top: 0.75rem;
+  max-width: 46ch;
+  line-height: 1.6;
+  color: var(--color-nu-muted);
+}
+
+/* --------------------------------------------------------------------- form */
+
+.form {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.form__row {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .form__row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.field label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-nu-body);
+}
+
+.field__error {
+  font-size: 0.8125rem;
+  color: var(--color-nu-alert);
+}
+
+.consent {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-nu-muted);
+}
+
+.consent input {
+  margin-top: 0.2rem;
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--color-nu-orange);
+}
+
+.consent a {
+  color: var(--color-nu-orange);
+}
+
+.form__submit {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.form__status:empty {
+  display: none;
+}
+
+.form__status p {
+  padding: 0.85rem 1rem;
+  border-radius: 0.9rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+
+.form__status--ok {
+  border: 1px solid var(--color-nu-leaf);
+  background: color-mix(in srgb, var(--color-nu-leaf) 14%, transparent);
+  color: var(--color-nu-heading);
+}
+
+.form__status--error {
+  border: 1px solid color-mix(in srgb, var(--color-nu-alert) 45%, transparent);
+  background: color-mix(in srgb, var(--color-nu-alert) 8%, transparent);
+  color: var(--color-nu-alert);
+}
+
+/* ------------------------------------------------------------------ company */
+
+.footer__company-name {
+  margin-top: 0.5rem;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--color-nu-heading);
+}
+
+.footer__address {
+  margin-top: 0.75rem;
+  font-style: normal;
+  line-height: 1.6;
+  color: var(--color-nu-muted);
+}
+
+.footer__contacts {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.footer__contacts a {
+  color: var(--color-nu-body);
+  text-decoration: none;
+}
+
+.footer__contacts a:hover {
+  color: var(--color-nu-orange);
+  text-decoration: underline;
+}
+
+.footer__claim {
+  margin: 1.75rem 0 0;
+  padding-left: 1rem;
+  border-left: 2px solid var(--color-nu-orange);
+}
+
+.footer__claim p {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-nu-heading);
+}
+
+.footer__claim cite {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.8125rem;
+  font-style: normal;
+  color: var(--color-nu-muted);
+}
+
+.footer__jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.75rem;
+}
+
+.footer__jump a {
+  display: block;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--color-nu-hairline);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  color: var(--color-nu-muted);
+  text-decoration: none;
+}
+
+.footer__jump a:hover {
+  border-color: var(--color-nu-orange);
+  color: var(--color-nu-orange-deep);
+}
+
+.footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-nu-hairline);
+  font-size: 0.75rem;
+  color: var(--color-nu-muted);
+}
