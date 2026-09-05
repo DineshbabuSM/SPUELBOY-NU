@@ -1,0 +1,8 @@
+RewriteEngine On
+RewriteBase /
+
+# Serve existing files/directories directly; everything else falls back to the app
+RewriteRule ^index\.html$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.html [L]
